@@ -20,13 +20,13 @@ void add_bank(){
   mem.free_offset = 0;
 }
 
-char * string_add(char * str, int len){
+int32_t string_ref(char * str, int len){
   if(mem.banks == 0 || mem.bank_size - mem.free_offset < len){
     add_bank();
   }
   memcpy((char *)mem.banks[mem.banks_used-1] + mem.free_offset, str, len);
   mem.free_offset += len;
-  return (char *)mem.banks[mem.banks_used-1] + mem.free_offset - len;
+  return 42;//(char *)mem.banks[mem.banks_used-1] + mem.free_offset - len;
 }
 
 
