@@ -1,23 +1,15 @@
 #pragma once
 
 #include <stdint.h>
-//#include "_obj/_cgo_export.h"
-
-struct stringmem{
-  void ** banks;
-  int bank_size;
-  int banks_used;
-  int free_offset;
-};
 
 void init_stringmem(int);
 
 void add_bank();
 
-//char * string_add(char *, int);
+uint32_t string_ref(char *, int);
 
-void hehe();
+int64_t get_ref(char *);
 
-//typedef struct { const char *p; intgo n; } _GoString_;
+void set_ref(char *, uint32_t, uintptr_t);
 
-int32_t string_ref(char*, int);
+char * ref_ptr(uint32_t);
