@@ -5,6 +5,10 @@ package types
 import "C"
 import "unsafe"
 
+const (
+	StringRefDefault = StringRef(0)
+)
+
 func init() {
 	C.init_stringmem(1e6) // 1MB
 	NewStringRef("")
