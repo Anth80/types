@@ -19,7 +19,7 @@ func setup() {
 			go func() {
 				for j := i; j < 1e6; j += n {
 					s := strconv.Itoa(j)
-					_ = StringRef(s)
+					_ = NewStringRef(s)
 				}
 				wg.Done()
 			}()
@@ -31,7 +31,7 @@ func setup() {
 func TestStringRefExists(t *testing.T) {
 	setup()
 	for i := 0; i < 1e6; i += 123 {
-		r := StringRef(strconv.Itoa(i))
+		r := NewStringRef(strconv.Itoa(i))
 		if strconv.Itoa(i) != r.String() {
 			t.Errorf("got %s expected %s", r, strconv.Itoa(i))
 		}
@@ -42,7 +42,7 @@ func BenchmarkStringRefExists(b *testing.B) {
 	setup()
 	for i := 0; i < b.N; i++ {
 		j := (i * 123) % 1e6
-		_ = StringRef(strconv.Itoa(j))
+		_ = NewStringRef(strconv.Itoa(j))
 	}
 }
 
@@ -51,6 +51,6 @@ func BenchmarkStringRefNew(b *testing.B) {
 	j := int(1e6)
 	for i := 0; i < b.N; i++ {
 		j += 1
-		_ = StringRef(strconv.Itoa(j))
+		_ = NewStringRef(strconv.Itoa(j))
 	}
 }

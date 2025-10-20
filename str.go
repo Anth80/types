@@ -9,16 +9,16 @@ func init() {
 	C.init_stringmem(1e6) // 1MB
 }
 
-type stringRef uint32
+type StringRef uint32
 
-func StringRef(s string) stringRef {
+func NewStringRef(s string) StringRef {
 	c_str := C.CString(s)
 	ref := C.string_ref(c_str, C.int(len(s)))
 	C.free(unsafe.Pointer(c_str))
-	return stringRef(ref)
+	return StringRef(ref)
 }
 
-func (s stringRef) String() string {
+func (s StringRef) String() string {
 	str_p := C.ref_ptr(C.uint(s))
 	return C.GoString(str_p)
 }
