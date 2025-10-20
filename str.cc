@@ -2,6 +2,8 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <cstdint>
+#include <vector>
 
 std::unordered_map<std::string, uint32_t> lut;
 std::vector<uintptr_t> addrs;
