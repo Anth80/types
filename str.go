@@ -7,6 +7,7 @@ import "unsafe"
 
 func init() {
 	C.init_stringmem(1e6) // 1MB
+	NewStringRef("")
 }
 
 type StringRef uint32

@@ -31,6 +31,10 @@ void add_bank(){
     mem.free_offset = 0;
 }
 
+extern int64_t get_ref(char *);
+
+extern void set_ref(char *, uint32_t, uintptr_t);
+
 uint32_t string_ref(char * str, int len){
     if(len >= mem.bank_size-1) {
         printf("string_ref: maximum string length exceeded: %d > %d\n", len, mem.bank_size-1);
