@@ -1,17 +1,32 @@
 package types
 
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"unsafe"
+)
+
 //#include <stdlib.h>
 //#include <string.h>
 //#include "str.h"
 import "C"
-import "unsafe"
 
 const (
 	StringRefDefault = StringRef(0)
 )
 
 func init() {
-	C.init_stringmem(1e6) // 1MB
+	var bank_size int = 1e6 // 1 MB
+	if os.Getenv("STRINGREF_BANK_SIZE") != "" {
+		if v, err := strconv.Atoi(os.Getenv("STRINGREF_BANK_SIZE")); err == nil {
+			bank_size = v
+		} else {
+			panic("invalid STRINGREF_BANK_SIZE")
+		}
+	}
+	fmt.Println("Initializing StringRef bank with size:", C.int(bank_size))
+	C.init_stringmem(C.int(bank_size))
 	NewStringRef("")
 }
 
