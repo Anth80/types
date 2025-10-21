@@ -1,7 +1,6 @@
 package types
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"unsafe"
@@ -25,7 +24,6 @@ func init() {
 			panic("invalid STRINGREF_BANK_SIZE")
 		}
 	}
-	fmt.Println("Initializing StringRef bank with size:", C.int(bank_size))
 	C.init_stringmem(C.int(bank_size))
 	NewStringRef("")
 }
