@@ -30,7 +30,6 @@ func (s StringRef) String() string {
 }
 
 func (s StringRef) Len() int {
-	str_p := C.ref_ptr(C.uint(s))
-	l := C.strlen(str_p)
+	l := C.string_len(C.uint(s))
 	return int(l)
 }

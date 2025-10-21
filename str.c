@@ -71,3 +71,12 @@ uint32_t string_ref(char * str, int len){
     pthread_rwlock_unlock(&mem.lock);
     return ref;
 }
+
+extern int get_len(uint32_t);
+
+int string_len(uint32_t ref) {
+    pthread_rwlock_rdlock(&mem.lock);
+    int len = get_len(ref);
+    pthread_rwlock_unlock(&mem.lock);
+    return len;
+}

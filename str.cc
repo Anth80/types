@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <cstdint>
+#include <cstring>
 #include <vector>
 
 std::unordered_map<std::string, uint32_t> lut;
@@ -27,6 +28,10 @@ void set_ref(char *s, uint32_t ref, uintptr_t addr) {
 
 char * ref_ptr(uint32_t ref) {
     return (char *)addrs[ref];
+}
+
+int get_len(uint32_t ref) {
+    return strlen((char *)addrs[ref]);
 }
 
 }
