@@ -27,6 +27,11 @@ func setup() {
 		wg.Wait()
 	})
 }
+func TestStringRefDefault(t *testing.T) {
+	if StringRefDefault.String() != "" {
+		t.Errorf("got %s expected empty string", StringRefDefault)
+	}
+}
 
 func TestStringRefExists(t *testing.T) {
 	setup()
@@ -34,6 +39,17 @@ func TestStringRefExists(t *testing.T) {
 		r := NewStringRef(strconv.Itoa(i))
 		if strconv.Itoa(i) != r.String() {
 			t.Errorf("got %s expected %s", r, strconv.Itoa(i))
+		}
+	}
+}
+
+func TestStringRefLen(t *testing.T) {
+	s := ""
+	for i := 0; i < 1000; i++ {
+		s += "a"
+		r := NewStringRef(s)
+		if r.Len() != len(s) {
+			t.Errorf("got len %d expected %d", r.Len(), len(s))
 		}
 	}
 }

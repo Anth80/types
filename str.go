@@ -1,6 +1,7 @@
 package types
 
 //#include <stdlib.h>
+//#include <string.h>
 //#include "str.h"
 import "C"
 import "unsafe"
@@ -26,4 +27,10 @@ func NewStringRef(s string) StringRef {
 func (s StringRef) String() string {
 	str_p := C.ref_ptr(C.uint(s))
 	return C.GoString(str_p)
+}
+
+func (s StringRef) Len() int {
+	str_p := C.ref_ptr(C.uint(s))
+	l := C.strlen(str_p)
+	return int(l)
 }
