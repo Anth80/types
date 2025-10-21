@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include "str.h"
 
-struct stringmem{
+struct stringmem {
     void ** banks;
     uint32_t bank_size;
     uint32_t banks_used;
@@ -15,7 +15,7 @@ struct stringmem{
 
 struct stringmem mem;
 
-void init_stringmem(int bank_size){
+void init_stringmem(int bank_size) {
     mem.bank_size = bank_size;
     mem.banks = 0;
     mem.banks_used = 0;
@@ -24,7 +24,7 @@ void init_stringmem(int bank_size){
     pthread_rwlock_init(&mem.lock, 0);
 }
 
-void add_bank(){ 
+void add_bank() {
     mem.banks_used++;
     mem.banks = (void **)realloc(mem.banks, sizeof(void *)*mem.banks_used);
     mem.banks[mem.banks_used-1] = malloc(mem.bank_size);
@@ -35,7 +35,7 @@ extern int64_t get_ref(char *);
 
 extern void set_ref(char *, uint32_t, uintptr_t);
 
-uint32_t string_ref(char * str, int len){
+uint32_t string_ref(char * str, int len) {
     if(len >= mem.bank_size-1) {
         printf("string_ref: maximum string length exceeded: %d > %d\n", len, mem.bank_size-1);
         exit(1);
@@ -55,18 +55,18 @@ uint32_t string_ref(char * str, int len){
     }
     uint32_t ref2 = ref;
 
-    if(mem.banks == 0 || mem.bank_size - mem.free_offset < len+1){
+    if(mem.banks == 0 || mem.bank_size - mem.free_offset < len+1) {
         add_bank();
     }
     uintptr_t addr = (uintptr_t)mem.banks[mem.banks_used-1] + mem.free_offset;
-  
+
     memcpy((char *)addr, str, len+1);
     mem.free_offset += len+1;
 
     ref = mem.refs_created;
-  
+
     set_ref(str, ref, addr);
-  
+
     mem.refs_created++;
     pthread_rwlock_unlock(&mem.lock);
     return ref;
