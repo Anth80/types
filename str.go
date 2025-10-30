@@ -28,6 +28,11 @@ func init() {
 	NewStringRef("")
 }
 
+type stringStruct struct {
+	str unsafe.Pointer
+	len int
+}
+
 type StringRef uint32
 
 func NewStringRef(s string) StringRef {
@@ -37,9 +42,16 @@ func NewStringRef(s string) StringRef {
 	return StringRef(ref)
 }
 
+func NewStringRefFromPtrLen(ptr unsafe.Pointer, len int) StringRef {
+	ref := C.string_ref((*C.char)(ptr), C.int(len))
+	return StringRef(ref)
+}
+
 func (s StringRef) String() string {
 	str_p := C.ref_ptr(C.uint(s))
-	return C.GoString(str_p)
+	ss := stringStruct{str: unsafe.Pointer(str_p), len: int(C.strlen(str_p))}
+	str := *(*string)(unsafe.Pointer(&ss))
+	return str
 }
 
 func (s StringRef) Len() int {
