@@ -54,6 +54,22 @@ func TestStringRefLen(t *testing.T) {
 	}
 }
 
+func TestStringRefLen2(t *testing.T) {
+	s := "Blåbärsöl"
+	r := NewStringRef(s)
+	if r.Len() != len(s) {
+		t.Errorf("got len %d expected %d", r.Len(), len(s))
+	}
+}
+
+func TestStringRefLen3(t *testing.T) {
+	s := "☃"
+	r := NewStringRef(s)
+	if r.Len() != len(s) {
+		t.Errorf("got len %d expected %d", r.Len(), len(s))
+	}
+}
+
 func BenchmarkStringRefExists(b *testing.B) {
 	setup()
 	for i := 0; i < b.N; i++ {
