@@ -27,6 +27,15 @@ func setup() {
 		wg.Wait()
 	})
 }
+
+func TestStringRefAlloc(t *testing.T) {
+	alloc := GetAlloc()
+	var expected int = 1e6
+	if alloc != expected {
+		t.Errorf("got alloc %d expected %d", alloc, expected)
+	}
+}
+
 func TestStringRefDefault(t *testing.T) {
 	if StringRefDefault.String() != "" {
 		t.Errorf("got %s expected empty string", StringRefDefault)

@@ -72,6 +72,13 @@ uint32_t string_ref(char * str, int len) {
     return ref;
 }
 
+int stringmem_get_alloc() {
+    pthread_rwlock_rdlock(&mem.lock);
+    int total = mem.banks_used * mem.bank_size;
+    pthread_rwlock_unlock(&mem.lock);
+    return total;
+}
+
 extern int get_len(uint32_t);
 
 int string_len(uint32_t ref) {

@@ -46,3 +46,8 @@ func (s StringRef) Len() int {
 	l := C.string_len(C.uint(s))
 	return int(l)
 }
+
+func GetAlloc() int {
+	l := C.stringmem_get_alloc()
+	return int(l)
+}
