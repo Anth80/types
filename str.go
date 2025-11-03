@@ -36,14 +36,17 @@ type stringStruct struct {
 type StringRef uint32
 
 func NewStringRef(s string) StringRef {
-	c_str := C.CString(s)
-	ref := C.string_ref(c_str, C.int(len(s)))
-	C.free(unsafe.Pointer(c_str))
+	//c_str := C.CString(s)
+	//ref := C.string_ref(c_str, C.int(len(s)))
+	//C.free(unsafe.Pointer(c_str))
+	ss := *(*stringStruct)(unsafe.Pointer(&s))
+	ref := C.string_ref((*C.char)(ss.str), C.int(ss.len))
 	return StringRef(ref)
 }
 
-func NewStringRefFromPtrLen(ptr unsafe.Pointer, len int) StringRef {
-	ref := C.string_ref((*C.char)(ptr), C.int(len))
+func NewStringRefFromBytes(bytes []byte, len int) StringRef {
+	ss := *(*stringStruct)(unsafe.Pointer(&bytes))
+	ref := C.string_ref((*C.char)(ss.str), C.int(len))
 	return StringRef(ref)
 }
 

@@ -36,6 +36,9 @@ extern int64_t get_ref(char *);
 extern void set_ref(char *, uint32_t, uintptr_t);
 
 uint32_t string_ref(char * str, int len) {
+    if(str == NULL) {
+        str = "";
+    }
     if(len >= mem.bank_size-1) {
         printf("string_ref: maximum string length exceeded: %d > %d\n", len, mem.bank_size-1);
         exit(1);
@@ -58,14 +61,17 @@ uint32_t string_ref(char * str, int len) {
     if(mem.banks == 0 || mem.bank_size - mem.free_offset < len+1) {
         add_bank();
     }
-    uintptr_t addr = (uintptr_t)mem.banks[mem.banks_used-1] + mem.free_offset;
+    uintptr_t addr_start = (uintptr_t)mem.banks[mem.banks_used-1] + mem.free_offset;
+    uintptr_t addr_end = (uintptr_t)mem.banks[mem.banks_used-1] + mem.free_offset+len;
 
-    memcpy((char *)addr, str, len+1);
+    memcpy((char *)addr_start, str, len);
+    memset((char *)addr_end, 0, 1);
+
     mem.free_offset += len+1;
 
     ref = mem.refs_created;
 
-    set_ref(str, ref, addr);
+    set_ref(str, ref, addr_start);
 
     mem.refs_created++;
     pthread_rwlock_unlock(&mem.lock);
