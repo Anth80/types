@@ -24,8 +24,7 @@ func init() {
 			panic("invalid STRINGREF_BANK_SIZE")
 		}
 	}
-	C.init_stringmem(C.int(bank_size))
-	NewStringRef("")
+	C.stringmem_init(C.int(bank_size))
 }
 
 type stringStruct struct {
@@ -36,11 +35,11 @@ type stringStruct struct {
 type StringRef uint32
 
 func NewStringRef(s string) StringRef {
-	//c_str := C.CString(s)
-	//ref := C.string_ref(c_str, C.int(len(s)))
-	//C.free(unsafe.Pointer(c_str))
-	ss := *(*stringStruct)(unsafe.Pointer(&s))
-	ref := C.string_ref((*C.char)(ss.str), C.int(ss.len))
+	c_str := C.CString(s)
+	ref := C.string_ref(c_str, C.int(len(s)))
+	C.free(unsafe.Pointer(c_str))
+	//&ss := *(*stringStruct)(unsafe.Pointer(&s))
+	//ref := C.string_ref((*C.char)(ss.str), C.int(ss.len))
 	return StringRef(ref)
 }
 
@@ -65,4 +64,8 @@ func (s StringRef) Len() int {
 func GetAlloc() int {
 	l := C.stringmem_get_alloc()
 	return int(l)
+}
+
+func Close() {
+	C.stringmem_free()
 }

@@ -13,11 +13,10 @@ func setup() {
 	once.Do(func() {
 		var wg sync.WaitGroup
 		n := runtime.NumCPU()
-		for i := 0; i < n; i++ {
+		for i := 0; i < n*1e6; i += 1e6 {
 			wg.Add(1)
-			i := i
 			go func() {
-				for j := i; j < 1e6; j += n {
+				for j := i; j < i+1e6; j += n {
 					s := strconv.Itoa(j)
 					_ = NewStringRef(s)
 				}

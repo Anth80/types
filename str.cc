@@ -26,7 +26,7 @@ void set_ref(char *s, uint32_t ref, uintptr_t addr) {
     addrs.push_back(addr);
 }
 
-char * ref_ptr(uint32_t ref) {
+char * ref_ptr_cc(uint32_t ref) {
     return (char *)addrs[ref];
 }
 
